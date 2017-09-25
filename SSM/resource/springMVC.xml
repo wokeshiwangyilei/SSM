@@ -1,0 +1,36 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/context
+  http://www.springframework.org/schema/context/spring-context.xsd
+  http://www.springframework.org/schema/mvc
+  http://www.springframework.org/schema/mvc/spring-mvc.xsd
+  http://www.springframework.org/schema/util
+  http://www.springframework.org/schema/util/spring-util.xsd"
+	default-autowire="byName">
+	<!-- 静态资源不能显示的问题的处理 -->
+	<mvc:default-servlet-handler></mvc:default-servlet-handler>
+	<!-- 启动注解方式 -->
+	<mvc:annotation-driven conversion-service="conversionService">
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<!-- 对提交的数据进行转换 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	</bean>
+
+	<!-- 配置controller所在的包，让spring去扫描,如果扫描到@controller这个注解，则认为是一个控制器 -->
+	<context:component-scan base-package="com.wyl"></context:component-scan>
+
+	<!-- 文件上传resolver -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="100242880" />
+		<property name="maxInMemorySize" value="40960" />
+	</bean>
+</beans>

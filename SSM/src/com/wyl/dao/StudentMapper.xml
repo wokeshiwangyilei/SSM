@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyl.dao.StudentMapper">
+
+	<resultMap id="BaseResultMap" type="com.wyl.beans.Score">
+
+		<result column="score" jdbcType="INTEGER" property="score" />
+
+		<association property="course" javaType="com.wyl.beans.Course">
+			<result column="na" jdbcType="VARCHAR" property="name1" />
+			<result column="credit" jdbcType="VARCHAR" property="credit" />
+		</association>
+
+		<association property="student" javaType="com.wyl.beans.Student">
+			<result column="name" jdbcType="VARCHAR" property="name" />
+			<result column="age" jdbcType="INTEGER" property="age" />
+		</association>
+	</resultMap>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		select
+		*
+		from
+		student,score,course
+		where
+		score.s_id=student.id
+		and
+		score.c_id=course.id
+
+		and
+		score.score>60
+	</select>
+</mapper>
